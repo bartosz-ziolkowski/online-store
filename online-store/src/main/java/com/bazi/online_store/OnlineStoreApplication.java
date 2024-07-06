@@ -37,12 +37,12 @@ public class OnlineStoreApplication {
 			Brand ganni = new Brand("GANNI");
 			Brand cphApparel = new Brand("CPH APPAREL");
 			Brand reserved = new Brand("RESERVED");
-			brandRepository.saveAll(Arrays.asList(ganni, cphApparel, reserved));
+			//brandRepository.saveAll(Arrays.asList(ganni, cphApparel, reserved));
 
 			Category shoes = new Category("Shoes");
 			Category clothes = new Category("Clothes");
 			Category sport = new Category("Sport");
-			categoryRepository.saveAll(Arrays.asList(shoes, clothes, sport));
+			//categoryRepository.saveAll(Arrays.asList(shoes, clothes, sport));
 
 			Product[] products = new Product[]{
 					new Product(shoes, ganni, "SKU001", "GANNI Sneakers", "Stylish sneakers for everyday wear", 120.00, "url1.png", true, 50, new Date(), new Date()),
@@ -67,7 +67,7 @@ public class OnlineStoreApplication {
 					new Product(sport, cphApparel, "SKU020", "CPH APPAREL Gym Bag", "Spacious gym bag", 40.00, "url20.png", true, 30, new Date(), new Date())
 			};
 
-			productRepository.saveAll(Arrays.asList(products));
+			//productRepository.saveAll(Arrays.asList(products));
 		};
 	}
 }
