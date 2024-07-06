@@ -5,12 +5,14 @@ import lombok.Data;
 @Data
 public class ProductSpecParams {
 
-    private int pageSize;
+    private int pageSize = 0;
     private String search;
-    private Long sort;
-    private Long brandId;
-    private Long categoryId;
+    private String sort;
+    private int brandId;
+    private int categoryId;
+    private String title;
     private final int MaxPageSize = 20;
+    private int pageIndex = 0;
 
     public void setPageSize(int pageSize) {
         this.pageSize = Math.min(pageSize, MaxPageSize);

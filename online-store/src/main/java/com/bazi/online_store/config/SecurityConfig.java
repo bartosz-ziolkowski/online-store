@@ -13,8 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain configureSecurity(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) ->
             authorize
-                .requestMatchers("/api/store/products", "/api/store/categories", "api/store/brands").permitAll()
-                .requestMatchers("/api/store/account").authenticated())
+                .requestMatchers("/api/store/categories", "/api/store/brands", "/api/store/products", "/api/store/products/**").permitAll())
                 .httpBasic(Customizer.withDefaults()).formLogin(Customizer.withDefaults());
 
         return http.build();
