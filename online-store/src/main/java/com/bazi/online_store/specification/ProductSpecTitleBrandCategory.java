@@ -27,7 +27,7 @@ public class ProductSpecTitleBrandCategory {
             }
 
             if(specParams.getBrandId() != 0) {
-                predicates.add(criteriaBuilder.equal(root.get("brandId"), new Brand(Long.valueOf(specParams.getBrandId()))));
+                predicates.add(criteriaBuilder.equal(root.get("brand"), new Brand(Long.valueOf(specParams.getBrandId()))));
             }
 
             if(specParams.getSort() != null && !specParams.getSort().isEmpty()) {
