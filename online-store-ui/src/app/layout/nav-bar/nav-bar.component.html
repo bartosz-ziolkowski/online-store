@@ -1,0 +1,65 @@
+<header
+  class="flex w-full items-center sticky top-0 z-50 bg-white dark:bg-dark"
+>
+  <div class="container">
+    <div class="relative -mx-4 flex items-center justify-evenly">
+      <div class="w-60 max-w-full px-4 ms-4">
+        <a routerLink="/home" class="block w-full py-5">
+          <img src="images/logo.png" alt="logo" class="dark:hidden" />
+          <img src="images/logo.png" alt="logo" class="hidden dark:block" />
+        </a>
+      </div>
+      <div class="flex w-full items-center justify-evenly px-4">
+        <div>
+          <button
+            (click)="toggleNavbar()"
+            id="navbarToggler"
+            [ngClass]="{ navbarTogglerActive: open }"
+            class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 mx-3 py-[6px] ring-primary focus:ring-2 lg:hidden bg-blue"
+          >
+            <span
+              class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
+            ></span>
+            <span
+              class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
+            ></span>
+            <span
+              class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
+            ></span>
+          </button>
+          <nav
+            id="navbarCollapse"
+            [ngClass]="{ hidden: !open }"
+            class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent"
+          >
+            <ul class="z-100 block lg:flex">
+              <app-nav-item NavLink="/about" (closeMenu)="closeMenu()"
+                >About</app-nav-item
+              >
+              <app-nav-item NavLink="/products" (closeMenu)="closeMenu()"
+                >Sneakers</app-nav-item
+              >
+              <app-nav-item NavLink="/contact" (closeMenu)="closeMenu()"
+                >Contact</app-nav-item
+              >
+            </ul>
+          </nav>
+        </div>
+        <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+          <a
+            routerLink="/login"
+            class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
+          >
+            Sign in
+          </a>
+          <a
+            routerLink="/register"
+            class="rounded-md bg-blue px-7 py-3 text-base font-medium text-beige hover:bg-primary/90 transition hover:bg-green"
+          >
+            Sign Up
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

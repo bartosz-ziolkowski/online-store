@@ -1,0 +1,21 @@
+<a *ngIf="product" href="#" class="group block overflow-hidden">
+  <img
+    src="{{ 'products/' + product.imageUrl }}"
+    alt="{{ product.title }}"
+    class="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+  />
+
+  <div class="relative bg-white pt-3">
+    <h3
+      class="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
+    >
+      {{ product.title }}
+    </h3>
+
+    <p class="mt-2">
+      <span class="tracking-wider text-gray-900">{{
+        product.unitPrice | currency
+      }}</span>
+    </p>
+  </div>
+</a>
