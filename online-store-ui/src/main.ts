@@ -1,13 +1,20 @@
-import { bootstrapApplication } from '@angular/platform-browser';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+
 import { AppComponent } from './app/app.component';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
-import {provideAnimations} from "@angular/platform-browser/animations"
+import { provideZoneChangeDetection } from '@angular/core';
 import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideAnimations(),
-    provideRouter(routes)
-  ]
-})
-  .catch((err) => console.error(err));
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideRouter(routes),
+  ],
+}).catch((err) => console.error(err));
