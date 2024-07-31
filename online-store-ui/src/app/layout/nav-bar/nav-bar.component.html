@@ -1,64 +1,89 @@
 <header
-  class="flex w-full items-center sticky top-0 z-50 bg-white dark:bg-dark"
+  class="flex w-full items-center justify-start sticky top-0 z-50 bg-beige"
 >
-  <div class="container">
-    <div class="relative -mx-4 flex items-center justify-evenly">
-      <div class="w-60 max-w-full px-4 ms-4">
-        <a routerLink="/home" class="block w-full py-5">
-          <img src="images/logo.png" alt="logo" class="dark:hidden" />
-          <img src="images/logo.png" alt="logo" class="hidden dark:block" />
-        </a>
+  <div class="relative w-full flex items-center justify-start">
+    <div class="w-60 max-w-full ps-4 lg:pe-4">
+      <a routerLink="/home" class="block w-full py-5">
+        <img src="images/logo.png" alt="logo" class="dark:hidden" />
+        <img src="images/logo.png" alt="logo" class="hidden dark:block" />
+      </a>
+    </div>
+    <div
+      class="relative flex w-full items-center md:justify-end md:pr-10 lg:justify-between"
+    >
+      <div>
+        <button
+          (click)="toggleNavbar()"
+          id="navbarToggler"
+          [ngClass]="{ navbarTogglerActive: open }"
+          class="absolute right-0 md:right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 mr-2 md:mx-4 py-[6px] ring-primary focus:ring-2 lg:hidden bg-blue"
+        >
+          <span
+            class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
+          ></span>
+          <span
+            class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
+          ></span>
+          <span
+            class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
+          ></span>
+        </button>
+        <nav
+          id="navbarCollapse"
+          [ngClass]="{ hidden: !open }"
+          class="absolute right-8 bg-beige z-100 top-4 w-full max-w-[150px] px-6 py-3 lg:static lg:block sm:border sm:border-blue lg:border-none lg:w-full lg:max-w-full lg:shadow-none"
+        >
+          <ul class="z-100 block lg:flex">
+            <app-nav-item NavLink="/about" (closeMenu)="closeMenu()"
+              >About</app-nav-item
+            >
+            <app-nav-item NavLink="/products" (closeMenu)="closeMenu()"
+              >Sneakers</app-nav-item
+            >
+            <app-nav-item NavLink="/contact" (closeMenu)="closeMenu()"
+              >Contact</app-nav-item
+            >
+            <a
+              routerLink="/cart"
+              (click)="closeMenu()"
+              class="lg:pl-8 flex items-center relative"
+            >
+              <i
+                class="fas fa-shopping-basket text-3xl text-blue hover:text-orange"
+              ></i>
+              <span
+                class="absolute top-0 sm:right-50 lg:right-0 translate-x-[50%] inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
+                *ngIf="this.cart$ | async as cart"
+              >
+                {{ cart.items.length }}
+              </span>
+            </a>
+          </ul>
+        </nav>
       </div>
-      <div class="flex w-full items-center justify-evenly px-4">
-        <div>
-          <button
-            (click)="toggleNavbar()"
-            id="navbarToggler"
-            [ngClass]="{ navbarTogglerActive: open }"
-            class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 mx-3 py-[6px] ring-primary focus:ring-2 lg:hidden bg-blue"
-          >
-            <span
-              class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
-            ></span>
-            <span
-              class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
-            ></span>
-            <span
-              class="relative my-[6px] block h-[2px] w-[30px] bg-beige dark:bg-white"
-            ></span>
-          </button>
-          <nav
-            id="navbarCollapse"
-            [ngClass]="{ hidden: !open }"
-            class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent"
-          >
-            <ul class="z-100 block lg:flex">
-              <app-nav-item NavLink="/about" (closeMenu)="closeMenu()"
-                >About</app-nav-item
-              >
-              <app-nav-item NavLink="/products" (closeMenu)="closeMenu()"
-                >Sneakers</app-nav-item
-              >
-              <app-nav-item NavLink="/contact" (closeMenu)="closeMenu()"
-                >Contact</app-nav-item
-              >
-            </ul>
-          </nav>
-        </div>
-        <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
-          <a
-            routerLink="/login"
-            class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
-          >
-            Sign in
-          </a>
-          <a
-            routerLink="/register"
-            class="rounded-md bg-blue px-7 py-3 text-base font-medium text-beige hover:bg-primary/90 transition hover:bg-green"
-          >
-            Sign Up
-          </a>
-        </div>
+      <div
+        class="justify-start sm:justify-evenly w-full sm:pl-4 md:mr-16 md:justify-end flex flex-row items-center space-x-2"
+      >
+        <p
+          *ngIf="loggedIn === true"
+          class="md:px-7 md:py-3 text-base font-medium text-dark"
+        >
+          Hi {{ getUsername() }}
+        </p>
+        <a
+          (click)="login()"
+          *ngIf="loggedIn === false"
+          class="rounded-md bg-blue px-7 py-3 text-base font-medium text-beige hover:bg-primary/90 transition hover:bg-green"
+        >
+          Sign in
+        </a>
+        <a
+          (click)="logout()"
+          *ngIf="loggedIn === true"
+          class="rounded-md bg-blue px-7 py-3 text-base font-medium text-beige hover:bg-primary/90 transition hover:bg-green"
+        >
+          Logout
+        </a>
       </div>
     </div>
   </div>

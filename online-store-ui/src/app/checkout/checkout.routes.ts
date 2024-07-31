@@ -1,4 +1,12 @@
-import { CheckoutComponent } from './cart.component';
+import { AuthGuard } from '../auth/auth.guard';
+import { CheckoutComponent } from './checkout.component';
 import { Routes } from '@angular/router';
 
-export const CART_ROUTES: Routes = [{ path: '', component: CartComponent }];
+export const CHECKOUT_ROUTES: Routes = [
+  {
+    path: '',
+    component: CheckoutComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['USER'] },
+  },
+];

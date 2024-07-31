@@ -11,6 +11,7 @@ public class ProductListResponse {
     private int totalPages;
     private long totalCount;
     private int pageIndex;
+    private int pageSize;
     private List<ProductResponse> dataList;
 
     public ProductListResponse() {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   templateUrl: './nav-item.component.html',
   styleUrl: './nav-item.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class NavItemComponent {
   @Input() NavLink!: string;

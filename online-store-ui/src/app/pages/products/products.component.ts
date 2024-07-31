@@ -1,15 +1,17 @@
 import {
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { IBrand, ICategory, IProduct } from '../../shared/model/product';
-import { PageChangedEvent, PaginationModule } from 'ngx-bootstrap/pagination';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { PaginationComponent } from './pagination/pagination.component';
 import { ProductItemComponent } from './product-item/product-item.component';
 import { ProductsParams } from '../../shared/model/productsParams';
 import { ProductsService } from './products.service';
@@ -22,19 +24,24 @@ import { ProductsService } from './products.service';
     RouterOutlet,
     RouterModule,
     ProductItemComponent,
-    PaginationModule,
+    PaginationComponent,
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Emulated,
 })
 export class ProductsComponent implements OnInit {
   @ViewChild('search') searchTerm?: ElementRef;
+  @ViewChild('menuContainer') menuContainer?: ElementRef;
+  @ViewChild('menuButton') menuButton?: ElementRef;
+
   products: IProduct[] = [];
   categories: ICategory[] = [];
   brands: IBrand[] = [];
   productsParams: ProductsParams;
   totalCount = 0;
+  menuOpen = false;
+
   sortOptions = [
     { name: 'Alphabetical', value: 'title' },
     { name: 'Price: Low to high', value: 'priceAsc' },
@@ -51,6 +58,22 @@ export class ProductsComponent implements OnInit {
     this.getBrands();
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: Event) {
+    if (
+      this.menuButton &&
+      this.menuContainer &&
+      !this.menuButton.nativeElement.contains(event.target) &&
+      !this.menuContainer.nativeElement.contains(event.target)
+    ) {
+      this.menuOpen = false;
+    }
+  }
+
   getProducts() {
     this.productsService.getProducts().subscribe({
       next: (res) => {
@@ -59,7 +82,6 @@ export class ProductsComponent implements OnInit {
         this.productsParams.pageSize = res.pageSize;
         this.totalCount = res.totalCount;
       },
-      error: (err) => console.log(err),
     });
   }
 
@@ -68,7 +90,6 @@ export class ProductsComponent implements OnInit {
       next: (res) => {
         this.categories = [{ categoryId: 0, categoryName: 'All' }, ...res];
       },
-      error: (err) => console.log(err),
     });
   }
 
@@ -77,7 +98,6 @@ export class ProductsComponent implements OnInit {
       next: (res) => {
         this.brands = [{ brandId: 0, brandName: 'All' }, ...res];
       },
-      error: (err) => console.log(err),
     });
   }
 
@@ -109,7 +129,6 @@ export class ProductsComponent implements OnInit {
     const params = this.productsService.getProductsParams();
     if (params.pageIndex !== event.page) {
       params.pageIndex = event.page;
-
       this.productsService.setProductsParams(params);
       this.productsParams = params;
       this.getProducts();

@@ -1,1 +1,103 @@
-<p>cart works!</p>
+<div class="mx-auto mt-10">
+  <div class="sm:flex my-10">
+    <div *ngIf="(cart$ | async) === null" class="w-full text-center py-20">
+      <p class="text-xl font-semibold text-gray-700">There are no items here</p>
+    </div>
+
+    <div
+      *ngIf="this.cart$ | async as cart"
+      class="w-full sm:w-3/4 bg-white px-10 pt-10 overflow-y-auto overflow-x-hidden max-lg:max-h-[400px] lg:h-[calc(100vh-60px)]"
+    >
+      <div class="flex justify-between border-b pb-8">
+        <h1 class="font-semibold text-2xl">Shopping Cart</h1>
+        <h2 class="font-semibold text-2xl">{{ cart.items.length }} ITEMS</h2>
+      </div>
+
+      <app-cart-item
+        *ngFor="let item of cart.items"
+        (increment)="incrementItemQuantity($event)"
+        (decrement)="decrementItemQuantity($event)"
+        (removeItem)="removeItemFromCart($event)"
+        [item]="item"
+      ></app-cart-item>
+    </div>
+
+    <div
+      *ngIf="this.cart$ | async as cart"
+      id="summary"
+      class="w-full sm:w-1/4 md:w-1/2 px-8 py-10"
+    >
+      <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
+      <div class="flex justify-between mt-10 mb-5">
+        <span class="font-semibold text-sm uppercase">
+          {{ cart.items.length }} items</span
+        >
+
+        <span class="font-semibold text-sm">{{
+          (cartTotals$ | async)!.subtotal | currency
+        }}</span>
+      </div>
+      <div>
+        <label class="font-medium inline-block mb-3 text-sm uppercase">
+          Shipping
+        </label>
+        <div *ngFor="let dm of deliveryMethods">
+          <input
+            type="radio"
+            id="{{ dm.deliveryMethodId }}"
+            [value]="dm"
+            name="deliveryMethod"
+            (click)="setShippingPrice(dm)"
+            [checked]="dm.price === cart.shippingPrice"
+          />
+          <label for="{{ dm }}" name="dm">
+            {{ dm.shortName }} - {{ dm.price | currency }}
+          </label>
+        </div>
+      </div>
+
+      <div class="py-10">
+        <label
+          for="promo"
+          class="font-semibold inline-block mb-3 text-sm uppercase"
+        >
+          Promo Code
+        </label>
+        <input
+          type="text"
+          id="promo"
+          placeholder="Enter your code"
+          class="p-2 text-sm w-full"
+        />
+      </div>
+      <button
+        class="bg-orange hover:bg-blue rounded-lg w-[60%] md:w-[40%] px-5 py-2 text-sm text-white uppercase"
+      >
+        Apply
+      </button>
+      <div class="border-t mt-8">
+        <div class="flex font-semibold justify-between py-6 text-sm uppercase">
+          <span>Total cost</span>
+          <span>{{ (cartTotals$ | async)!.total | currency }}</span>
+        </div>
+        <div
+          class="flex flex-col space-y-4 md:space-y-0 h-fit md:flex-row justify-evenly md:space-x-8 text-center"
+        >
+          <button
+            type="button"
+            (click)="goBack()"
+            class="bg-indigo-500 font-semibold rounded-lg hover:bg-indigo-600 py-3 px-3 text-sm h-fit text-white uppercase w-full"
+          >
+            Back
+          </button>
+          <a
+            routerLink="/checkout"
+            class="bg-indigo-500 font-semibold rounded-lg hover:bg-indigo-600 py-3 px-3 text-sm h-fit text-white uppercase w-full"
+          >
+            Checkout
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

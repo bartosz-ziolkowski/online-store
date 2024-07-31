@@ -1,21 +1,37 @@
-<a *ngIf="product" href="#" class="group block overflow-hidden">
+<a
+  [routerLink]="'/products/' + product.productId"
+  *ngIf="product"
+  class="group block overflow-hidden"
+>
   <img
     src="{{ 'products/' + product.imageUrl }}"
     alt="{{ product.title }}"
-    class="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+    class="h-[350px] w-full object-cover border border-black transition duration-500 group-hover:scale-105 sm:h-[450px]"
   />
-
-  <div class="relative bg-white pt-3">
-    <h3
-      class="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
-    >
-      {{ product.title }}
-    </h3>
-
-    <p class="mt-2">
-      <span class="tracking-wider text-gray-900">{{
-        product.unitPrice | currency
-      }}</span>
-    </p>
-  </div>
 </a>
+<div *ngIf="product" class="relative border border-gray-800 bg-white p-3">
+  <h3
+    class="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
+  >
+    {{ product.title }}
+  </h3>
+
+  <p class="mt-2 flex items-center space-x-2 z-100">
+    <span class="tracking-wider text-gray-900">{{
+      product.unitPrice | currency
+    }}</span>
+    <button
+      type="button"
+      (click)="addItemToCart($event)"
+      class="px-4 py-2 bg-blue hover:bg-green text-white text-xs font-semibold rounded hover:bg-blue-600 z-10 focus:outline-none focus:ring-2 focus:ring-blue-300"
+    >
+      Buy
+    </button>
+    <a
+      [routerLink]="'/products/' + product.productId"
+      class="px-4 py-2 bg-gray-500 text-white text-xs font-semibold rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+    >
+      See
+    </a>
+  </p>
+</div>

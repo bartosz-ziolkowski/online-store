@@ -43,40 +43,57 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductListResponse getProductList(ProductSpecParams specParams) {
+
         List<Product> productList = null;
         Page<Product> pages = null;
 
-        if (Integer.valueOf(specParams.getPageIndex()) == null) {
-            pages = new PageImpl<>(productRepository.findAll(productSpec.getProducts(specParams)));
+        if (Integer.valueOf(specParams.getPageIndex()) == null || Integer.valueOf(specParams.getPageIndex()) == 0 ) {
+            productList = productRepository.findAll(productSpec.getProducts(specParams));
+            if(productList != null && productList.size()> 0) {
+                ProductListResponse prldto =  new ProductListResponse();
+                prldto.setTotalCount(productList.size());
+                prldto.setDataList(new ArrayList<ProductResponse>());
+                for(Product product: productList) {
+
+                    ProductResponse prdto = new ProductResponse();
+                    prdto.populateDto(product);
+                    prldto.getDataList().add(prdto);
+                }
+                return prldto;
+            }
+
         }
         else {
-            if(Integer.valueOf(specParams.getPageSize()) == null || specParams.getPageSize() == 0) {
+            if(Integer.valueOf(specParams.getPageSize())== null || specParams.getPageSize() == 0) {
+
                 specParams.setPageSize(defaultPageSize);
+
             }
-            int pageIndex = Math.max(0, specParams.getPageIndex() - 1);
-            Pageable paging = PageRequest.of(pageIndex, specParams.getPageSize());
-            pages = productRepository.findAll(productSpec.getProducts(specParams), paging);
-        }
+            Pageable paging = PageRequest.of(specParams.getPageIndex()-1, specParams.getPageSize());
+            pages = productRepository.findAll(productSpec.getProducts(specParams),paging);
+            if(pages != null && pages.getContent() != null) {
 
-        if(pages != null && pages.getContent() != null ) {
-            productList = pages.getContent();
+                productList = pages.getContent();
+                if(productList != null && productList.size() >0) {
+                    ProductListResponse   prldto = new ProductListResponse();
+                    prldto.setTotalPages(pages.getTotalPages());
+                    prldto.setTotalCount(pages.getTotalElements());
+                    prldto.setPageIndex(pages.getNumber() +1);
+                    prldto.setPageSize(specParams.getPageSize());
+                    prldto.setDataList(new ArrayList<ProductResponse>());
+                    for(Product product: productList) {
 
-            if(productList != null && productList.size() > 0) {
-                ProductListResponse productListDto = new ProductListResponse();
-                productListDto.setTotalPages(pages.getTotalPages());
-                productListDto.setTotalCount(pages.getTotalElements());
-                productListDto.setPageIndex(pages.getNumber());
-                productListDto.setDataList(new ArrayList<ProductResponse>());
-
-                for(Product product: productList) {
-                    ProductResponse productDto = new ProductResponse();
-                    productDto.populateDto(product);
-                    productListDto.getDataList().add(productDto);
+                        ProductResponse prdto = new ProductResponse();
+                        prdto.populateDto(product);
+                        prldto.getDataList().add(prdto);
+                    }
+                    return prldto;
                 }
-                return productListDto ;
             }
+
         }
         return null;
     }
+
 
 }

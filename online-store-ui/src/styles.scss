@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @keyframes gradient {
   0% {
@@ -19,8 +19,16 @@
   margin: 0;
 }
 
+.toast-bottom-right {
+  position: absolute;
+  bottom: 3vh;
+
+  right: 3vw;
+}
+
 :root,
-body {
+body,
+html {
   width: 100%;
   overflow-x: hidden;
 }

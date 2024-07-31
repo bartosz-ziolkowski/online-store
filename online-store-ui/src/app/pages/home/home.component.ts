@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
+
 import { HeroComponent } from './hero/hero.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { ProductsCollectionComponent } from './products-collection/products-collection.component';

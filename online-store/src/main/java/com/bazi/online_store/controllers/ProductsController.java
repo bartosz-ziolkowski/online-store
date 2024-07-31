@@ -4,7 +4,6 @@ import com.bazi.online_store.dtos.ProductListResponse;
 import com.bazi.online_store.dtos.ProductResponse;
 import com.bazi.online_store.models.Brand;
 import com.bazi.online_store.models.Category;
-import com.bazi.online_store.models.Product;
 import com.bazi.online_store.repositories.BrandRepository;
 import com.bazi.online_store.repositories.CategoryRepository;
 import com.bazi.online_store.services.IProductService;

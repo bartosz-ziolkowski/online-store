@@ -1,9 +1,10 @@
 import { BehaviorSubject, map } from 'rxjs';
 import { Cart, ICart, ICartItem, ICartTotals } from '../shared/model/cart';
+import { Injectable, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
+import { IDeliveryMethod } from '../shared/model/delivery';
 import { IProduct } from '../shared/model/product';
-import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -15,6 +16,7 @@ export class CartService {
   private cartTotalsSource = new BehaviorSubject<ICartTotals | null>(null);
   cartTotals$ = this.cartTotalsSource.asObservable();
   basketUrl = environment.API_BASKET_URL;
+  baseUrl = environment.API_URL;
 
   constructor(private http: HttpClient) {}
 
@@ -43,7 +45,6 @@ export class CartService {
   getCart(id: string) {
     return this.http.get<ICart>(this.basketUrl + '/' + id).pipe(
       map((cart: ICart) => {
-        console.log('getCart', cart);
         this.cartSource.next(cart);
         this.calculateTotals();
       })
@@ -51,25 +52,29 @@ export class CartService {
   }
 
   setCart(cart: ICart) {
-    return this.http.post<ICart>(this.basketUrl, cart).subscribe(
-      (res: ICart) => {
-        console.log('Response received:', res);
+    return this.http
+      .post<ICart>(this.basketUrl, cart)
+      .subscribe((res: ICart) => {
         this.cartSource.next(res);
         this.calculateTotals();
-      },
-      (err) => {
-        console.log('setCart', err);
-      }
-    );
+      });
   }
 
   addItemToCart(product: IProduct, quantity = 1) {
     const itemToAdd = this.mapProductToCartItem(product);
     const cart = this.getCurrentCart() ?? this.createCart();
-    console.log(cart);
     cart.items = this.addOrUpdateItem(cart.items, itemToAdd, quantity);
-    console.log(cart.items);
     this.setCart(cart);
+  }
+
+  createPaymentIntent() {
+    return this.http
+      .post<ICart>(this.baseUrl + 'payments/' + this.getCurrentCart()?.id, {})
+      .pipe(
+        map((cart) => {
+          this.cartSource.next(cart);
+        })
+      );
   }
 
   addOrUpdateItem(
@@ -106,6 +111,7 @@ export class CartService {
         (i) => i.productId == item.productId
       );
       cart.items[foundItemIndex].quantity++;
+      this.setCart(cart);
     }
   }
 
@@ -138,7 +144,7 @@ export class CartService {
 
   deleteCart(cart: ICart) {
     return this.http
-      .delete(this.basketUrl + cart.id, { responseType: 'text' })
+      .delete(this.basketUrl + '/' + cart.id, { responseType: 'text' })
       .subscribe({
         next: () => {
           this.cartSource.next(null);
@@ -146,5 +152,24 @@ export class CartService {
           localStorage.removeItem('angular_cart_id');
         },
       });
+  }
+
+  setShippingPrice(deliveryMethod: IDeliveryMethod) {
+    const cart = this.getCurrentCart();
+    if (cart) {
+      cart.deliveryMethodId = deliveryMethod.deliveryMethodId;
+      cart.shippingPrice = deliveryMethod.price;
+      this.setCart(cart);
+    }
+  }
+
+  getDeliveryMethods() {
+    return this.http
+      .get<IDeliveryMethod[]>(this.baseUrl + 'deliverymethods')
+      .pipe(
+        map((dm) => {
+          return dm.sort((a, b) => a.price - b.price);
+        })
+      );
   }
 }

@@ -1,0 +1,13 @@
+@import "../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+a {
+  text-decoration: none;
+}
+
+
+li > a:hover {
+  color: #ff3b00 !important;
+}

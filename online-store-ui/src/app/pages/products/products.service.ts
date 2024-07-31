@@ -23,10 +23,17 @@ export class ProductsService {
 
     if (this.productsParams.categoryId > 0)
       params = params.append('categoryId', this.productsParams.categoryId);
-
+    params = params.append('sort', this.productsParams.sort);
+    params = params.append(
+      'pageIndex',
+      this.productsParams.pageIndex.toString()
+    );
+    params = params.append('pageSize', this.productsParams.pageSize.toString());
+    if (this.productsParams.search)
+      params = params.append('search', this.productsParams.search);
     return this.http
       .get<IPagination<IProduct[]>>(environment.API_URL + 'store/products', {
-        params: params,
+        params,
       })
       .pipe(
         map((res) => {

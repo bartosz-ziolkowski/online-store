@@ -3,8 +3,10 @@ package com.bazi.online_store;
 import com.bazi.online_store.models.Brand;
 import com.bazi.online_store.models.Category;
 import com.bazi.online_store.models.Product;
+import com.bazi.online_store.models.order_aggregate.DeliveryMethod;
 import com.bazi.online_store.repositories.BrandRepository;
 import com.bazi.online_store.repositories.CategoryRepository;
+import com.bazi.online_store.repositories.DeliveryMethodRepository;
 import com.bazi.online_store.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -33,17 +35,24 @@ public class OnlineStoreApplication {
 	private BrandRepository brandRepository;
 
 	@Bean
-	public CommandLineRunner seedDatabase(BrandRepository brandRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
+	public CommandLineRunner seedDatabase(BrandRepository brandRepository, CategoryRepository categoryRepository, ProductRepository productRepository, DeliveryMethodRepository deliveryMethodRepository) {
 		return args -> {
 			Brand veja = new Brand("Veja");
 			Brand adidas = new Brand("Adidas");
 			Brand nike = new Brand("Nike");
+
 			//brandRepository.saveAll(Arrays.asList(veja, adidas, nike));
 
 			Category running = new Category("Running");
 			Category outdoor = new Category("Outdoor");
 			Category city = new Category("City");
 			//categoryRepository.saveAll(Arrays.asList(running, outdoor, city));
+
+			DeliveryMethod none = new DeliveryMethod("No shipping", "0 days", "No shipping", 0);
+			DeliveryMethod standard = new DeliveryMethod("Standard", "4 days", "Standard shipping", 20);
+			DeliveryMethod premium = new DeliveryMethod("Premium", "2 days", "Premium shipping", 40);
+			DeliveryMethod fast = new DeliveryMethod("Fast", "1 day", "Fast shipping", 60);
+			//deliveryMethodRepository.saveAll(Arrays.asList(none, standard, premium, fast));
 
 			String[] imageUrls = {
 					"shoes-1.png", "shoes-2.png", "shoes-3.png", "shoes-4.png", "shoes-5.png",

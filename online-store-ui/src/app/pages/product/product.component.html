@@ -1,1 +1,68 @@
-<p>product works!</p>
+<div class="md:flex items-center justify-center py-12 2xl:px-20 md:px-6 px-4">
+  <div class="xl:w-2/6 lg:w-2/5 w-80 md:block border boder-black hidden">
+    <img
+      class="w-full"
+      alt="image of a girl posing"
+      src="/products/{{ product?.imageUrl }}"
+    />
+  </div>
+  <div class="md:hidden border boder-black">
+    <img
+      class="w-full"
+      alt="image of a girl posing"
+      src="/products/{{ product?.imageUrl }}"
+    />
+  </div>
+  <div class="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
+    <div class="border-b border-gray-200 pb-6">
+      <h1
+        class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 mt-2"
+      >
+        {{ product?.title }}
+      </h1>
+    </div>
+    <div
+      class="py-4 border-b border-gray-200 flex items-center justify-between"
+    >
+      <p class="text-base leading-4 text-gray-800">Category</p>
+      <div class="flex items-center justify-center">
+        <p class="text-sm leading-none text-gray-600">
+          {{ product?.categoryName }}
+        </p>
+      </div>
+    </div>
+    <div
+      class="py-4 border-b border-gray-200 flex items-center justify-between"
+    >
+      <p class="text-base leading-4 text-gray-800">Brand</p>
+      <div class="flex items-center justify-center">
+        <p class="text-sm leading-none text-gray-600">
+          {{ product?.brandName }}
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-base leading-4 mt-7 text-gray-600">
+        {{ product?.description }}
+      </p>
+      <p class="text-base leading-4 mt-4 text-gray-600">
+        Price: {{ product?.unitPrice | currency }}
+      </p>
+      <button
+        type="button"
+        (click)="addItemToCart($event)"
+        class="focus:ring-2 focus:ring-offset-2 rounded-lg mt-8 focus:ring-gray-800 text-base flex items-center justify-center leading-none text-white bg-green w-full py-4 hover:bg-blue focus:outline-none"
+      >
+        Add to cart
+      </button>
+      <button
+        type="button"
+        (click)="goBack()"
+        class="focus:ring-2 focus:ring-offset-2 rounded-lg mt-4 focus:ring-gray-800 text-base flex items-center justify-center leading-none text-white bg-gray-800 w-full py-4 hover:bg-gray-700 focus:outline-none"
+      >
+        Back
+      </button>
+    </div>
+  </div>
+</div>
