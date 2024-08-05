@@ -2,8 +2,8 @@
   <div class="max-lg:max-w-xl mx-auto w-fit md:w-full my-auto">
     <div *ngIf="this.cart$ | async as cart" class="grid lg:grid-cols-3 gap-6">
       <div class="lg:col-span-2 max-lg:order-1 lg:p-6 lg:!pr-0 max-w-4xl">
-        <div class="text-center max-lg:hidden">
-          <h2 class="text-3xl font-bold">Checkout</h2>
+        <div class="text-center mb-6 lg:my-4 lg:mb-0">
+          <h2 class="text-2xl lg:text-3xl font-bold">Checkout</h2>
         </div>
 
         <div [formGroup]="paymentElementForm" class="lg:mt-16">
@@ -11,94 +11,52 @@
             <h2 class="text-xl font-bold text-gray-800">Order Info</h2>
             <div class="grid sm:grid-cols-2 gap-8 mt-8">
               <div>
-                <input
-                  type="text"
-                  required
-                  formControlName="name"
-                  placeholder="Name"
-                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none"
-                />
+                <input type="text" required formControlName="name" placeholder="Name"
+                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none" />
               </div>
               <div>
-                <input
-                  type="email"
-                  required
-                  formControlName="email"
-                  placeholder="E-mail"
-                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none"
-                />
+                <input type="email" required formControlName="email" placeholder="E-mail"
+                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none" />
               </div>
               <div>
-                <input
-                  type="text"
-                  required
-                  formControlName="address"
-                  placeholder="Street address"
-                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none"
-                />
+                <input type="text" required formControlName="address" placeholder="Street address"
+                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none" />
               </div>
               <div>
-                <input
-                  type="text"
-                  required
-                  formControlName="city"
-                  placeholder="City"
-                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none"
-                />
+                <input type="text" required formControlName="city" placeholder="City"
+                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none" />
               </div>
               <div>
-                <input
-                  type="text"
-                  required
-                  formControlName="state"
-                  placeholder="State"
-                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none"
-                />
+                <input type="text" required formControlName="state" placeholder="State"
+                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none" />
               </div>
               <div>
-                <input
-                  type="text"
-                  required
-                  formControlName="zipcode"
-                  placeholder="Postal code"
-                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none"
-                />
+                <input type="text" required formControlName="zipcode" placeholder="Postal code"
+                  class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-blue-600 outline-none" />
               </div>
             </div>
           </div>
           @if (elementsOptions.clientSecret !== '') {
           <div class="mt-8">
-            <ngx-stripe-elements
-              [stripe]="stripe"
-              [elementsOptions]="elementsOptions"
-            >
+            <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
               <ngx-stripe-payment [options]="paymentElementOptions" />
             </ngx-stripe-elements>
           </div>
           }
           <div class="flex flex-wrap gap-4 mt-8 justify-end">
-            <button
-              type="button"
-              (click)="goBack()"
-              class="min-w-[150px] px-6 py-3.5 text-sm bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-            >
+            <button type="button" (click)="goBack()"
+              class="min-w-[150px] px-6 py-3.5 text-sm bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
               Back
             </button>
             @if (elementsOptions.clientSecret === '') {
-            <button
-              type="button"
-              (click)="proceedToPayment($event)"
-              class="min-w-[150px] px-6 py-3.5 text-sm bg-blue text-white rounded-lg hover:bg-green"
-            >
-              {{ (loading | async) ? "Loading" : "Proceed to payment" }}
+            <button type="button" (click)="proceedToPayment($event)"
+              class="min-w-[150px] px-6 py-3.5 text-sm bg-blue text-white rounded-lg hover:bg-green">
+              {{ (loading | async) ? "Loading..." : "Proceed to payment" }}
             </button>
             } @if (elementsOptions.clientSecret !== '') {
-            <button
-              type="button"
-              (click)="pay()"
-              class="min-w-[150px] px-6 py-3.5 text-sm bg-blue text-white rounded-lg hover:bg-green"
-            >
-              {{ (loading | async) ? "Loading" : "Pay" }}
+            <button type="button" (click)="pay()"
+              class="min-w-[150px] px-6 py-3.5 text-sm bg-blue text-white rounded-lg hover:bg-green">
+              {{ (loading | async) ? "Loading..." : "Pay" }}
             </button>
             }
           </div>
@@ -107,15 +65,10 @@
 
       <div class="bg-gray-100 my-auto lg:h-screen lg:sticky lg:top-0">
         <div class="relative h-full">
-          <div
-            class="p-6 overflow-auto max-lg:max-h-[400px] lg:h-[calc(100vh-60px)] max-lg:mb-8"
-          >
+          <div class="p-6 overflow-auto max-lg:max-h-[400px] lg:h-[calc(100vh-60px)] max-lg:mb-8">
             <h2 class="text-xl font-bold text-gray-800">Order Summary</h2>
             <div class="space-y-8">
-              <app-checkout-item
-                *ngFor="let item of cart.items"
-                [item]="item"
-              ></app-checkout-item>
+              <app-checkout-item *ngFor="let item of cart.items" [item]="item"></app-checkout-item>
             </div>
           </div>
 
@@ -124,19 +77,19 @@
               Products
               <span class="ml-auto">{{
                 (cartTotals$ | async)!.subtotal | currency
-              }}</span>
+                }}</span>
             </h4>
             <h4 class="flex flex-wrap gap-4 text-base text-gray-800 font-bold">
               Shipping
               <span class="ml-auto">{{
                 (cartTotals$ | async)!.shipping | currency
-              }}</span>
+                }}</span>
             </h4>
             <h4 class="flex flex-wrap gap-4 text-base text-gray-800 font-bold">
               Total
               <span class="ml-auto">{{
                 (cartTotals$ | async)!.total | currency
-              }}</span>
+                }}</span>
             </h4>
           </div>
         </div>

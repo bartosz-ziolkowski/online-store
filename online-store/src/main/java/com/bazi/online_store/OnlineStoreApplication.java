@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
@@ -37,22 +38,41 @@ public class OnlineStoreApplication {
 	@Bean
 	public CommandLineRunner seedDatabase(BrandRepository brandRepository, CategoryRepository categoryRepository, ProductRepository productRepository, DeliveryMethodRepository deliveryMethodRepository) {
 		return args -> {
-			Brand veja = new Brand("Veja");
-			Brand adidas = new Brand("Adidas");
-			Brand nike = new Brand("Nike");
+			List<Brand> brands = Arrays.asList(
+					new Brand("Veja"),
+					new Brand("Adidas"),
+					new Brand("Nike"),
+					new Brand("Puma"),
+					new Brand("Reebok"),
+					new Brand("New Balance"),
+					new Brand("Asics"),
+					new Brand("Under Armour"),
+					new Brand("Saucony"),
+					new Brand("Mizuno")
+			);
 
-			//brandRepository.saveAll(Arrays.asList(veja, adidas, nike));
 
-			Category running = new Category("Running");
-			Category outdoor = new Category("Outdoor");
-			Category city = new Category("City");
-			//categoryRepository.saveAll(Arrays.asList(running, outdoor, city));
+			List<Category> categories = Arrays.asList(
+					new Category("Running"),
+					new Category("Outdoor"),
+					new Category("City"),
+					new Category("Training"),
+					new Category("Casual"),
+					new Category("Basketball"),
+					new Category("Soccer"),
+					new Category("Tennis"),
+					new Category("Golf"),
+					new Category("Skateboarding")
+			);
 
-			DeliveryMethod none = new DeliveryMethod("No shipping", "0 days", "No shipping", 0);
-			DeliveryMethod standard = new DeliveryMethod("Standard", "4 days", "Standard shipping", 20);
-			DeliveryMethod premium = new DeliveryMethod("Premium", "2 days", "Premium shipping", 40);
-			DeliveryMethod fast = new DeliveryMethod("Fast", "1 day", "Fast shipping", 60);
-			//deliveryMethodRepository.saveAll(Arrays.asList(none, standard, premium, fast));
+
+			List<DeliveryMethod> deliveryMethods = Arrays.asList(
+					new DeliveryMethod("No shipping", "0 days", "No shipping", 0),
+					new DeliveryMethod("Standard", "4 days", "Standard shipping", 20),
+					new DeliveryMethod("Premium", "2 days", "Premium shipping", 40),
+					new DeliveryMethod("Fast", "1 day", "Fast shipping", 60)
+			);
+
 
 			String[] imageUrls = {
 					"shoes-1.png", "shoes-2.png", "shoes-3.png", "shoes-4.png", "shoes-5.png",
@@ -63,19 +83,35 @@ public class OnlineStoreApplication {
 
 			Random random = new Random();
 
-			Product[] products = new Product[]{
-					new Product(running, veja, "SKU001", "Veja Running Shoes", "High-performance running shoes", 150.00, getRandomImageUrl(imageUrls, random), true, 20, new Date(), new Date()),
-					new Product(running, adidas, "SKU002", "Adidas Ultraboost", "Comfortable running shoes with Boost technology", 180.00, getRandomImageUrl(imageUrls, random), true, 30, new Date(), new Date()),
-					new Product(running, nike, "SKU003", "Nike Air Zoom", "Lightweight running shoes", 170.00, getRandomImageUrl(imageUrls, random), true, 25, new Date(), new Date()),
-					new Product(outdoor, veja, "SKU004", "Veja Hiking Boots", "Durable boots for outdoor adventures", 200.00, getRandomImageUrl(imageUrls, random), true, 15, new Date(), new Date()),
-					new Product(outdoor, adidas, "SKU005", "Adidas Terrex", "Reliable outdoor shoes", 190.00, getRandomImageUrl(imageUrls, random), true, 10, new Date(), new Date()),
-					new Product(outdoor, nike, "SKU006", "Nike ACG", "All-conditions gear for outdoor activities", 210.00, getRandomImageUrl(imageUrls, random), true, 12, new Date(), new Date()),
-					new Product(city, veja, "SKU007", "Veja Urban Sneakers", "Stylish sneakers for city wear", 130.00, getRandomImageUrl(imageUrls, random), true, 50, new Date(), new Date()),
-					new Product(city, adidas, "SKU008", "Adidas City Shoes", "Comfortable and stylish city shoes", 140.00, getRandomImageUrl(imageUrls, random), true, 40, new Date(), new Date()),
-					new Product(city, nike, "SKU009", "Nike Casual", "Everyday casual shoes", 160.00, getRandomImageUrl(imageUrls, random), true, 35, new Date(), new Date())
-			};
 
-			//productRepository.saveAll(Arrays.asList(products));
+			List<Product> products = Arrays.asList(
+					new Product(categories.get(0), brands.get(0), "SKU001", "Veja Running Shoes", "High-performance running shoes", 150.00, getRandomImageUrl(imageUrls, random), true, 20, new Date(), new Date()),
+					new Product(categories.get(0), brands.get(1), "SKU002", "Adidas Ultraboost", "Comfortable running shoes with Boost technology", 180.00, getRandomImageUrl(imageUrls, random), true, 30, new Date(), new Date()),
+					new Product(categories.get(0), brands.get(2), "SKU003", "Nike Air Zoom", "Lightweight running shoes", 170.00, getRandomImageUrl(imageUrls, random), true, 25, new Date(), new Date()),
+					new Product(categories.get(1), brands.get(0), "SKU004", "Veja Hiking Boots", "Durable boots for outdoor adventures", 200.00, getRandomImageUrl(imageUrls, random), true, 15, new Date(), new Date()),
+					new Product(categories.get(1), brands.get(3), "SKU005", "Puma Outdoor", "Reliable outdoor shoes", 190.00, getRandomImageUrl(imageUrls, random), true, 10, new Date(), new Date()),
+					new Product(categories.get(1), brands.get(4), "SKU006", "Reebok Trail", "All-conditions gear for outdoor activities", 210.00, getRandomImageUrl(imageUrls, random), true, 12, new Date(), new Date()),
+					new Product(categories.get(2), brands.get(5), "SKU007", "New Balance City Sneakers", "Stylish sneakers for city wear", 130.00, getRandomImageUrl(imageUrls, random), true, 50, new Date(), new Date()),
+					new Product(categories.get(2), brands.get(6), "SKU008", "Asics Urban Shoes", "Comfortable and stylish city shoes", 140.00, getRandomImageUrl(imageUrls, random), true, 40, new Date(), new Date()),
+					new Product(categories.get(2), brands.get(7), "SKU009", "Under Armour Casual", "Everyday casual shoes", 160.00, getRandomImageUrl(imageUrls, random), true, 35, new Date(), new Date()),
+					new Product(categories.get(3), brands.get(8), "SKU010", "Saucony Training Shoes", "High-performance training shoes", 145.00, getRandomImageUrl(imageUrls, random), true, 28, new Date(), new Date()),
+					new Product(categories.get(3), brands.get(9), "SKU011", "Mizuno Gym Shoes", "Durable and comfortable gym shoes", 155.00, getRandomImageUrl(imageUrls, random), true, 32, new Date(), new Date()),
+					new Product(categories.get(4), brands.get(0), "SKU012", "Veja Casual Sneakers", "Casual sneakers for everyday wear", 125.00, getRandomImageUrl(imageUrls, random), true, 45, new Date(), new Date()),
+					new Product(categories.get(5), brands.get(1), "SKU013", "Adidas Basketball Shoes", "High-performance basketball shoes", 190.00, getRandomImageUrl(imageUrls, random), true, 22, new Date(), new Date()),
+					new Product(categories.get(5), brands.get(2), "SKU014", "Nike Air Jordans", "Iconic basketball shoes", 220.00, getRandomImageUrl(imageUrls, random), true, 18, new Date(), new Date()),
+					new Product(categories.get(6), brands.get(3), "SKU015", "Puma Soccer Boots", "Professional soccer boots", 175.00, getRandomImageUrl(imageUrls, random), true, 27, new Date(), new Date()),
+					new Product(categories.get(6), brands.get(4), "SKU016", "Reebok Soccer Cleats", "Durable soccer cleats", 165.00, getRandomImageUrl(imageUrls, random), true, 25, new Date(), new Date()),
+					new Product(categories.get(7), brands.get(5), "SKU017", "New Balance Tennis Shoes", "High-performance tennis shoes", 160.00, getRandomImageUrl(imageUrls, random), true, 19, new Date(), new Date()),
+					new Product(categories.get(8), brands.get(6), "SKU018", "Asics Golf Shoes", "Comfortable golf shoes", 170.00, getRandomImageUrl(imageUrls, random), true, 21, new Date(), new Date()),
+					new Product(categories.get(9), brands.get(7), "SKU019", "Under Armour Skate Shoes", "Durable skateboarding shoes", 130.00, getRandomImageUrl(imageUrls, random), true, 34, new Date(), new Date()),
+					new Product(categories.get(9), brands.get(8), "SKU020", "Saucony Skater Shoes", "Stylish and comfortable skate shoes", 135.00, getRandomImageUrl(imageUrls, random), true, 36, new Date(), new Date())
+			);
+
+
+			//brandRepository.saveAll(brands);
+			//categoryRepository.saveAll(categories);
+			//deliveryMethodRepository.saveAll(deliveryMethods);
+			//productRepository.saveAll(products);
 		};
 	}
 

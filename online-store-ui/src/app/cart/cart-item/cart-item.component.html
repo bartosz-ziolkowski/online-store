@@ -1,44 +1,28 @@
-<div
-  class="md:flex items-stretch py-8 md:py-10 lg:py-8 border-t border-gray-50"
->
-  <div class="md:w-4/12 2xl:w-1/4 w-full">
+<div class="md:flex items-stretch py-8 md:py-10 lg:py-8 border-t border-gray-50">
+  <div class="md:w-4/12 2xl:w-1/4 w-full flex justify-center items-center">
     <a [routerLink]="['/products', item.productId]" class="block h-full">
-      <img
-        [src]="'products/' + item.imageUrl"
-        alt="{{ item.title }}"
-        class="h-full object-center object-cover md:block hidden"
-      />
-      <img
-        [src]="'products/' + item.imageUrl"
-        alt="{{ item.title }}"
-        class="md:hidden w-full h-full object-center object-cover"
-      />
+      <img [src]="'products/' + item.imageUrl" alt="{{ item.title }}"
+        class="hidden md:block max-h-48 object-contain mx-auto" />
+      <img [src]="'products/' + item.imageUrl" alt="{{ item.title }}"
+        class="md:hidden max-h-48 object-contain mx-auto" />
     </a>
   </div>
+
   <div class="md:pl-3 md:w-8/12 2xl:w-3/4 flex flex-col justify-center">
     <div class="flex items-center justify-between w-full">
-      <a
-        [routerLink]="['/products', item.productId]"
-        class="text-base font-black leading-none text-gray-800"
-      >
+      <a [routerLink]="['/products', item.productId]" class="text-base font-black leading-none text-gray-800">
         {{ item.title }}
       </a>
       <div class="flex items-center space-x-2">
-        <button
-          type="button"
-          (click)="decrementItemQuantity(item)"
-          class="px-3 py-1 w-8 h-8 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-        >
+        <button type="button" (click)="decrementItemQuantity(item)"
+          class="px-3 py-1 w-8 h-8 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
           -
         </button>
         <span class="text-base font-medium text-gray-800">
           {{ item.quantity }}
         </span>
-        <button
-          type="button"
-          (click)="incrementItemQuantity(item)"
-          class="px-2 py-1 w-8 h-8 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-        >
+        <button type="button" (click)="incrementItemQuantity(item)"
+          class="px-2 py-1 w-8 h-8 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
           +
         </button>
       </div>
@@ -54,11 +38,8 @@
     </p>
     <div class="flex items-center justify-between pt-5">
       <div class="flex items-center">
-        <button
-          type="button"
-          (click)="removeCartItem(item)"
-          class="text-xs leading-3 outline p-1 text-red-500 rounded-lg cursor-pointer"
-        >
+        <button type="button" (click)="removeCartItem(item)"
+          class="text-xs leading-3 outline p-1 text-red-500 rounded-lg cursor-pointer">
           Remove
         </button>
       </div>

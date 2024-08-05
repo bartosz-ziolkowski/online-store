@@ -32,7 +32,7 @@ export class NavBarComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private keycloak: KeycloakService
+    //private keycloak: KeycloakService
   ) {
     this.cart$ = this.cartService.cart$;
   }
@@ -42,18 +42,18 @@ export class NavBarComponent implements OnInit {
   }
 
   async isLogged() {
-    this.loggedIn = await this.keycloak.isLoggedIn();
+    //this.loggedIn = await this.keycloak.isLoggedIn();
     if (this.loggedIn) {
-      this.userProfile = await this.keycloak.loadUserProfile();
+    //  this.userProfile = await this.keycloak.loadUserProfile();
     }
   }
 
   public login() {
-    this.keycloak.login();
+    //this.keycloak.login();
   }
 
   public logout() {
-    this.keycloak.logout();
+   // this.keycloak.logout();
   }
 
   getUsername() {

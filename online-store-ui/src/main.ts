@@ -11,7 +11,6 @@ import {
 
 import { AppComponent } from './app/app.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { StripeFactoryService } from 'ngx-stripe';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { environment } from './environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -24,9 +23,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8444',
-        realm: 'oauth2-butik-realm',
-        clientId: 'oauth2-butik-client',
+        url: 'http://localhost:9090',
+        realm: 'butikdk',
+        clientId: 'butikdk-client',
       },
       initOptions: {
         onLoad: 'check-sso',
@@ -42,16 +41,15 @@ bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
       PaginationModule.forRoot(),
-
-      KeycloakAngularModule
+    //  KeycloakAngularModule
     ),
-    KeycloakService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService],
-    },
+    // KeycloakService,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initializeKeycloak,
+    //   multi: true,
+    //   deps: [KeycloakService],
+    // },
     provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptorsFromDi()),
