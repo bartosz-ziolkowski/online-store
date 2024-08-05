@@ -4,7 +4,7 @@ export class ProductsParams {
   brandId = 0;
   categoryId = 0;
   pageIndex = 1;
-  pageSize = environment.pageSize;
+  pageSize = environment.PAGE_SIZE;
   sort = 'name';
   search = '';
 }

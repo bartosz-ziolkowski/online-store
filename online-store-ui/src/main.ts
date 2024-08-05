@@ -23,9 +23,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: environment.keycloak.url,
-        realm: environment.keycloak.realm,
-        clientId: environment.keycloak.clientId,
+        url: environment.KEYCLOAK_URL,
+        realm: environment.KEYCLOAK_REALM,
+        clientId: environment.KEYCLOAK_CLIENT_ID,
       },
       initOptions: {
         onLoad: 'check-sso',
@@ -54,7 +54,7 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes),
-    provideNgxStripe(environment.stripe.publicKey),
+    provideNgxStripe(environment.STRIPE_PUBLIC_KEY),
     provideToastr({
       positionClass: 'toast-bottom-right',
       closeButton: true,
