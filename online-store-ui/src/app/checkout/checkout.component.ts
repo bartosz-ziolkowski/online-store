@@ -54,7 +54,7 @@ export class CheckoutComponent implements OnInit {
     private router: Router
   ) {
     this.cart$ = this.cartService.cart$;
-    this.stripe = this.stripeFactory.create(environment.stripe.publicKey);
+    this.stripe = this.stripeFactory.create(environment.STRIPE_PUBLIC_KEY);
   }
 
   paymentElementForm = this.fb.group({
