@@ -39,17 +39,14 @@ function initializeKeycloak(keycloak: KeycloakService) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      PaginationModule.forRoot()
-      //  KeycloakAngularModule
-    ),
-    // KeycloakService,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initializeKeycloak,
-    //   multi: true,
-    //   deps: [KeycloakService],
-    // },
+    importProvidersFrom(PaginationModule.forRoot(), KeycloakAngularModule),
+    KeycloakService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService],
+    },
     provideAnimations(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptorsFromDi()),
