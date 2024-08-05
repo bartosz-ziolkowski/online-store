@@ -23,9 +23,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:9090',
-        realm: 'butikdk',
-        clientId: 'butikdk-client',
+        url: environment.keycloak.url,
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId,
       },
       initOptions: {
         onLoad: 'check-sso',
@@ -40,8 +40,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      PaginationModule.forRoot(),
-    //  KeycloakAngularModule
+      PaginationModule.forRoot()
+      //  KeycloakAngularModule
     ),
     // KeycloakService,
     // {
