@@ -62,14 +62,14 @@ jobs:
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/os-ui:latest,${{ secrets.DOCKERHUB_USERNAME }}/os-ui:${{ steps.extract_version.outputs.VERSION }}
           build-args: |
-            PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
-            PRODUCTION: ${{ secrets.PRODUCTION }}
-            API_URL: ${{ secrets.API_URL }}
-            API_BASKET_URL: ${{ secrets.API_BASKET_URL }}
-            KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
-            KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
-            KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
-            STRIPE_PUBLIC_KEY: ${{ secrets.STRIPE_PUBLIC_KEY }}
+            PAGE_SIZE: ${{ env.PAGE_SIZE }}
+            PRODUCTION: ${{ env.PRODUCTION }}
+            API_URL: ${{ env.API_URL }}
+            API_BASKET_URL: ${{ env.API_BASKET_URL }}
+            KEYCLOAK_URL: ${{ env.KEYCLOAK_URL }}
+            KEYCLOAK_REALM: ${{ env.KEYCLOAK_REALM }}
+            KEYCLOAK_CLIENT_ID: ${{ env.KEYCLOAK_CLIENT_ID }}
+            STRIPE_PUBLIC_KEY: ${{ env.STRIPE_PUBLIC_KEY }}
 
 # TO-DO: set-up laster VPS to use self-hosting
 #  deploy:
