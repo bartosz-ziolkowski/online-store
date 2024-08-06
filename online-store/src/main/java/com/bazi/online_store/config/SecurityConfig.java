@@ -18,6 +18,9 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    @Value("${application.cors.origins}")
+    private List<String> allowedOrigins;
+
     @Bean
     public SecurityFilterChain configureSecurity(HttpSecurity http) throws Exception {
 
@@ -26,8 +29,7 @@ public class SecurityConfig {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:4200",
-                            "http://localhost:8081"));
+                    config.setAllowedOrigins(allowedOrigins);
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
