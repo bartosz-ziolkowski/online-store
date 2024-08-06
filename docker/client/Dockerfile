@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN node -r dotenv/config mynode.js
+
 RUN npm run build --prod
 
 FROM nginx:latest
