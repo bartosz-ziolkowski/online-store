@@ -50,7 +50,7 @@ jobs:
       - name: Run environment setup script
         run: |
           cd online-store-ui
-          node path/to/your/script.js  # Adjust the path to your script file
+          node -r dotenv/config mynode.js
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -66,7 +66,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/os-ui:latest,${{ secrets.DOCKERHUB_USERNAME }}/os-ui:${{ steps.extract_version.outputs.VERSION }}
-          
+
 # TO-DO: set-up laster VPS to use self-hosting
 #  deploy:
 #    name: Deploy Client
