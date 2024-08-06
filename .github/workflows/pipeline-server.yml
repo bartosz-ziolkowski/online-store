@@ -1,0 +1,206 @@
+name: ButikDK Server API Pipeline
+
+on:
+  push:
+    branches:
+      - ci/pipeline
+    paths:
+      - online-store/**
+      - docker/server/**
+      - "docker-compose.yml"
+      - .github/workflows/*-server.yml
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    name: Compile project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set execute permissions for mvnw
+        run: chmod +x online-store/mvnw
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "corretto"
+
+      - name: Compile project
+        run: |
+          cd online-store
+          ./mvnw clean compile
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Unit tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set execute permissions for mvnw
+        run: chmod +x online-store/mvnw
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "corretto"
+
+      - name: Set environment variables
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
+          echo "STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}" >> $GITHUB_ENV
+          echo "SECURITY_USER=${{ secrets.SECURITY_USER }}" >> $GITHUB_ENV
+          echo "SECURITY_PASSWORD=${{ secrets.SECURITY_PASSWORD }}" >> $GITHUB_ENV
+          echo "JWT_ISSUER_URI=${{ secrets.JWT_ISSUER_URI }}" >> $GITHUB_ENV
+          echo "JWK_SET_URI=${{ secrets.JWK_SET_URI }}" >> $GITHUB_ENV
+
+      - name: Running Unit Tests
+        run: |
+          cd online-store
+          ./mvnw clean test
+
+  build:
+    runs-on: ubuntu-latest
+    name: Build backend
+    needs: [compile]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set execute permissions for mvnw
+        run: chmod +x online-store/mvnw
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "corretto"
+
+      - name: Set environment variables
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
+          echo "STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}" >> $GITHUB_ENV
+          echo "SECURITY_USER=${{ secrets.SECURITY_USER }}" >> $GITHUB_ENV
+          echo "SECURITY_PASSWORD=${{ secrets.SECURITY_PASSWORD }}" >> $GITHUB_ENV
+          echo "JWT_ISSUER_URI=${{ secrets.JWT_ISSUER_URI }}" >> $GITHUB_ENV
+          echo "JWK_SET_URI=${{ secrets.JWK_SET_URI }}" >> $GITHUB_ENV
+
+      - name: Build project
+        run: |
+          cd online-store
+          ./mvnw clean package
+
+  build-image:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set execute permissions for mvnw
+        run: chmod +x online-store/mvnw
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "corretto"
+
+      - name: Set environment variables
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> $GITHUB_ENV
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> $GITHUB_ENV
+          echo "STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}" >> $GITHUB_ENV
+          echo "SECURITY_USER=${{ secrets.SECURITY_USER }}" >> $GITHUB_ENV
+          echo "SECURITY_PASSWORD=${{ secrets.SECURITY_PASSWORD }}" >> $GITHUB_ENV
+          echo "JWT_ISSUER_URI=${{ secrets.JWT_ISSUER_URI }}" >> $GITHUB_ENV
+          echo "JWK_SET_URI=${{ secrets.JWK_SET_URI }}" >> $GITHUB_ENV
+
+      - name: Build project
+        run: |
+          cd online-store
+          ./mvnw clean package
+
+      - name: Extract project version
+        id: extract_version
+        run: |
+          cd online-store
+          echo "VERSION=$(./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_ENV
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push to DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          context: online-store
+          file: docker/server/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/os-api:${{ env.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/os-api:latest
+          build-args: |
+            PROFILE=dev
+            APP_VERSION=${{ env.VERSION }}
+            DB_URL=${{ env.DB_URL }}
+
+# TO-DO: set-up VPS first
+# deploy:
+#   name: Deploy Server
+#   runs-on: self-hosted
+#   needs: [build-image]
+#   steps:
+#     - name: Create deployment folder
+#       run: ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} "mkdir -p ci-cd"
+
+#     - name: Copy docker-compose file
+#       run: scp -oStrictHostKeyChecking=no docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+
+#     - name: Set ENV variable and deploy
+#       run: |
+#         ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} <<EOF
+#         export EMAIL_HOST_NAME=${{ secrets.EMAIL_HOST_NAME }}
+#         export EMAIL_USER_NAME=${{ secrets.EMAIL_USER_NAME }}
+#         export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+#         cd ci-cd
+#         docker compose -f docker-compose.yml pull -q
+#         docker compose -f docker-compose.yml up -d
+#         EOF
+
+#  health-check:
+#    name: API Health Check
+#    runs-on: self-hosted
+#    needs: [deploy]
+#    steps:
+#      - name: Check the docker container health status
+#        run: |
+#          if ! docker ps -a | grep pn-api; then
+#            echo "Container is not running"
+#            exit 1
+#          fi
