@@ -1,5 +1,6 @@
 package com.bazi.online_store.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -10,6 +11,11 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories
 public class RedisConfig {
 
+    @Value("${spring.data.redis.host}")
+    private String REDIS_HOST;
+    @Value("${spring.data.redis.port}")
+    private Integer REDIS_PORT;
+
     @Bean
     public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<?, ?> template = new RedisTemplate<>();
@@ -19,8 +25,9 @@ public class RedisConfig {
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConnection = new JedisConnectionFactory();
-        jedisConnection.setHostName("localhost");
-        jedisConnection.setPort(6380);
+        jedisConnection.setHostName(REDIS_HOST);
+        jedisConnection.setPort(REDIS_PORT);
+        jedisConnection.setUsePool(true);
         return jedisConnection;
     }
 }

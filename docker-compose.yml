@@ -4,6 +4,7 @@ services:
     container_name: store-db
     image: mysql:latest
     environment:
+      MYSQL_USER_NAME: root
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: store-db
     volumes:
@@ -14,8 +15,8 @@ services:
       - store-net
     restart: unless-stopped
 
-  store-redis:
-    container_name: store-redis
+  redis:
+    container_name: redis
     image: redis:latest
     ports:
       - 6380:6379
@@ -24,6 +25,8 @@ services:
       - redis:/data
     networks:
       - store-net
+    depends_on:
+      - store-db
   
   keycloak:
     container_name: keycloak-butik
@@ -37,6 +40,28 @@ services:
       - store-net
     command: 
       - "start-dev"
+    depends_on:
+      - store-db
+  
+  os-api:
+    container_name: os-api
+    image: os/os-api:1.0.14
+    ports:
+      - 8082:8080
+    depends_on:
+      - store-db
+    networks:
+      - store-net
+  
+  os-ui:
+    container_name: os-ui
+    image: os/os-ui:1.0.1
+    ports:
+      - 8081:80
+    networks:
+      - store-net
+    depends_on:
+      - os-api
   
 networks:
   store-net:
