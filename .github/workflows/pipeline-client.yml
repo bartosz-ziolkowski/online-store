@@ -60,6 +60,15 @@ jobs:
 
       - name: Build & Push to DockerHub
         uses: docker/build-push-action@v5
+        env:
+          PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
+          PRODUCTION: ${{ secrets.PRODUCTION }}
+          API_URL: ${{ secrets.API_URL }}
+          API_BASKET_URL: ${{ secrets.API_BASKET_URL }}
+          KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+          KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
+          KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
+          STRIPE_PUBLIC_KEY: ${{ secrets.STRIPE_PUBLIC_KEY }}
         with:
           context: online-store-ui
           file: docker/client/Dockerfile

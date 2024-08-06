@@ -11,16 +11,6 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Set environment variables
-ENV PAGE_SIZE=missing_page_size
-ENV PRODUCTION=missing_production
-ENV API_URL=missing_api_url
-ENV API_BASKET_URL=missing_basket_url
-ENV KEYCLOAK_URL=missing_keycloak_url
-ENV KEYCLOAK_REALM=missing_keycloak_realm
-ENV KEYCLOAK_CLIENT_ID=missing_client_id
-ENV STRIPE_PUBLIC_KEY=missing_stripe_public_key
-
 # Generate production build of the Angular app
 RUN npm run build --prod
 
