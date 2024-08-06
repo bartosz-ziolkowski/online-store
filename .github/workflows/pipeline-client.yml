@@ -26,7 +26,7 @@ jobs:
           cd online-store-ui
           echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
 
-      - name: Install dependencies
+      - name: Install all dependencies
         run: |
           cd online-store-ui
           npm install
