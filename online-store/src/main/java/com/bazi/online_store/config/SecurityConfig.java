@@ -41,7 +41,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorize) ->
                 authorize
-                        .requestMatchers("/api/store/categories","/api/store/brands","/api/store/products", "/api/deliverymethods", "/basket", "/basket/**", "/api/payments/", "/api/payments/**", "/api/store/products/**")
+                        .requestMatchers("/api/store/categories","/api/store/brands","/api/store/products", "/api/deliverymethods", "/basket", "/basket/**", "/api/payments/", "/api/payments/**", "/api/store/products/**", "/swagger-ui/**",
+                                "/v3/api-docs/**")
                         .permitAll()
                         .requestMatchers("/api/orders").hasRole("ADMIN"))
                         .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtCustomizer ->
