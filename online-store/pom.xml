@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.bazi</groupId>
 	<artifactId>online-store</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.14</version>
 	<name>online-store</name>
 	<description>Online Store in DK and PL</description>
 	<url/>
@@ -55,6 +55,10 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
