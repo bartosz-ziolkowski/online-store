@@ -64,6 +64,7 @@ jobs:
           echo "SECURITY_PASSWORD=${{ secrets.SECURITY_PASSWORD }}" >> $GITHUB_ENV
           echo "JWT_ISSUER_URI=${{ secrets.JWT_ISSUER_URI }}" >> $GITHUB_ENV
           echo "JWK_SET_URI=${{ secrets.JWK_SET_URI }}" >> $GITHUB_ENV
+          echo "ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}" >> $GITHUB_ENV
 
       - name: Running Unit Tests
         run: |
@@ -102,6 +103,7 @@ jobs:
           echo "SECURITY_PASSWORD=${{ secrets.SECURITY_PASSWORD }}" >> $GITHUB_ENV
           echo "JWT_ISSUER_URI=${{ secrets.JWT_ISSUER_URI }}" >> $GITHUB_ENV
           echo "JWK_SET_URI=${{ secrets.JWK_SET_URI }}" >> $GITHUB_ENV
+          echo "ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}" >> $GITHUB_ENV
 
       - name: Build project
         run: |
@@ -139,6 +141,7 @@ jobs:
           echo "SECURITY_PASSWORD=${{ secrets.SECURITY_PASSWORD }}" >> $GITHUB_ENV
           echo "JWT_ISSUER_URI=${{ secrets.JWT_ISSUER_URI }}" >> $GITHUB_ENV
           echo "JWK_SET_URI=${{ secrets.JWK_SET_URI }}" >> $GITHUB_ENV
+          echo "ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}" >> $GITHUB_ENV
 
       - name: Build project
         run: |
