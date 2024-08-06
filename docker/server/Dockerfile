@@ -15,8 +15,7 @@ ARG DB_URL
 WORKDIR /app
 COPY --from=build /build/target/online-store-*.jar /app/
 
-# Extract the JAR version
-RUN APP_VERSION=$(ls /app | grep *.jar | awk 'NR==2{split($0,a,"-"); print a[3]}' | awk '{sub(/.jar$/,"")}1')\
+    RUN APP_VERSION=$(ls /app | grep *.jar | awk 'NR==2{split($0,a,"-"); print a[3]}' | awk '{sub(/.jar$/,"")}1')\
     && echo "Building container with OS v-$version"
 EXPOSE 8080
 
