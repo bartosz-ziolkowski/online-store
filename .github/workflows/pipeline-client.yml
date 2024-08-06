@@ -31,22 +31,6 @@ jobs:
           cd online-store-ui
           npm install
 
-      - name: Set environment variables
-        run: |
-          echo "PRODUCTION=${{ secrets.PRODUCTION }}" >> $GITHUB_ENV
-          echo "PAGE_SIZE=${{ secrets.PAGE_SIZE }}" >> $GITHUB_ENV
-          echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
-          echo "API_BASKET_URL=${{ secrets.API_BASKET_URL }}" >> $GITHUB_ENV
-          echo "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" >> $GITHUB_ENV
-          echo "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" >> $GITHUB_ENV
-          echo "KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}" >> $GITHUB_ENV
-          echo "STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}" >> $GITHUB_ENV
-
-      - name: Run environment setup script
-        run: |
-          cd online-store-ui
-          node -r dotenv/config mynode.js
-
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -61,7 +45,16 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/os-ui:latest,${{ secrets.DOCKERHUB_USERNAME }}/os-ui:${{ steps.extract_version.outputs.VERSION }}
-          
+          env:
+            PRODUCTION: '${{ secrets.PRODUCTION }}'
+            PAGE_SIZE: '${{ secrets.PAGE_SIZE }}'
+            API_URL: '${{ secrets.API_URL }}'
+            API_BASKET_URL: '${{ secrets.API_BASKET_URL }}'
+            KEYCLOAK_URL: '${{ secrets.KEYCLOAK_URL }}'
+            KEYCLOAK_REALM: '${{ secrets.KEYCLOAK_REALM }}'
+            KEYCLOAK_CLIENT_ID: '${{ secrets.KEYCLOAK_CLIENT_ID }}'
+            STRIPE_PUBLIC_KEY: '${{ secrets.STRIPE_PUBLIC_KEY }}'
+
 # TO-DO: set-up laster VPS to use self-hosting
 #  deploy:
 #    name: Deploy Client
