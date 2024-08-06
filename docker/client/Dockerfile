@@ -11,6 +11,28 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Set build-time arguments
+ARG PAGE_SIZE
+ARG PRODUCTION
+ARG API_URL
+ARG API_BASKET_URL
+ARG KEYCLOAK_URL
+ARG KEYCLOAK_REALM
+ARG KEYCLOAK_CLIENT_ID
+ARG STRIPE_PUBLIC_KEY
+
+# Create the environment.prod.ts file with the build arguments
+RUN echo "export const environment = {" > src/environments/environment.ts && \
+    echo "  PRODUCTION: ${PRODUCTION}," >> src/environments/environment.ts && \
+    echo "  PAGE_SIZE: ${PAGE_SIZE}," >> src/environments/environment.ts && \
+    echo "  API_URL: '${API_URL}'," >> src/environments/environment.ts && \
+    echo "  API_BASKET_URL: '${API_BASKET_URL}'," >> src/environments/environment.ts && \
+    echo "  KEYCLOAK_URL: '${KEYCLOAK_URL}'," >> src/environments/environment.ts && \
+    echo "  KEYCLOAK_REALM: '${KEYCLOAK_REALM}'," >> src/environments/environment.ts && \
+    echo "  KEYCLOAK_CLIENT_ID: '${KEYCLOAK_CLIENT_ID}'," >> src/environments/environment.ts && \
+    echo "  STRIPE_PUBLIC_KEY: '${STRIPE_PUBLIC_KEY}'" >> src/environments/environment.ts && \
+    echo "};" >> src/environments/environment.ts
+
 # Generate production build of the Angular app
 RUN npm run build --prod
 
