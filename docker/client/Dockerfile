@@ -21,17 +21,14 @@ ARG KEYCLOAK_REALM
 ARG KEYCLOAK_CLIENT_ID
 ARG STRIPE_PUBLIC_KEY
 
-# Create the environment.prod.ts file with the build arguments
-RUN echo "export const environment = {" > src/environments/environment.ts && \
-    echo "  PRODUCTION: ${PRODUCTION}," >> src/environments/environment.ts && \
-    echo "  PAGE_SIZE: ${PAGE_SIZE}," >> src/environments/environment.ts && \
-    echo "  API_URL: '${API_URL}'," >> src/environments/environment.ts && \
-    echo "  API_BASKET_URL: '${API_BASKET_URL}'," >> src/environments/environment.ts && \
-    echo "  KEYCLOAK_URL: '${KEYCLOAK_URL}'," >> src/environments/environment.ts && \
-    echo "  KEYCLOAK_REALM: '${KEYCLOAK_REALM}'," >> src/environments/environment.ts && \
-    echo "  KEYCLOAK_CLIENT_ID: '${KEYCLOAK_CLIENT_ID}'," >> src/environments/environment.ts && \
-    echo "  STRIPE_PUBLIC_KEY: '${STRIPE_PUBLIC_KEY}'" >> src/environments/environment.ts && \
-    echo "};" >> src/environments/environment.ts
+ENV PAGE_SIZE=${PAGE_SIZE}
+ENV PRODUCTION=${PRODUCTION}
+ENV API_URL=${API_URL}
+ENV API_BASKET_URL=${API_BASKET_URL}
+ENV KEYCLOAK_URL=${KEYCLOAK_URL}
+ENV KEYCLOAK_REALM=${KEYCLOAK_REALM}
+ENV KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
+ENV STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY}
 
 # Generate production build of the Angular app
 RUN npm run build --prod
