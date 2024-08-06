@@ -1,0 +1,92 @@
+name: ButikDK Client Pipeline
+
+on:
+  push:
+    branches:
+      - ci/pipeline
+    paths:
+      - online-store-ui/**
+      - docker/client/**
+      - "docker-compose.yml"
+      - .github/workflows/*-client.yml
+
+jobs:
+  build-image:
+    name: Build Client Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract project version
+        id: extract_version
+        run: |
+          cd online-store-ui
+          echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: |
+          cd online-store-ui
+          npm install
+
+      - name: Set environment variables
+        run: |
+          echo "PRODUCTION=${{ secrets.PRODUCTION }}" >> $GITHUB_ENV
+          echo "PAGE_SIZE=${{ secrets.PAGE_SIZE }}" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
+          echo "API_BASKET_URL=${{ secrets.API_BASKET_URL }}" >> $GITHUB_ENV
+          echo "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" >> $GITHUB_ENV
+          echo "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" >> $GITHUB_ENV
+          echo "KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "STRIPE_PUBLIC_KEY=${{ secrets.STRIPE_PUBLIC_KEY }}" >> $GITHUB_ENV
+
+      - name: Run environment setup script
+        run: |
+          cd online-store-ui
+          node -r dotenv/config mynode.js
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push to DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          context: online-store-ui
+          file: docker/client/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/os-ui:latest,${{ secrets.DOCKERHUB_USERNAME }}/os-ui:${{ steps.extract_version.outputs.VERSION }}
+          
+# TO-DO: set-up laster VPS to use self-hosting
+#  deploy:
+#    name: Deploy Client
+#    runs-on: ubuntu-latest
+#    needs: [build-image]
+#    steps:
+#      - name: Create deployment folder
+#        run: ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} "mkdir -p ci-cd"
+
+#      - name: Copy docker-compose file
+#        run: scp -oStrictHostKeyChecking=no docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }}:ci-cd/docker-compose.yml
+
+#      - name: Set ENV variable and deploy
+#        run: |
+#          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_IP }} <<EOF
+#          cd ci-cd
+#          docker compose -f docker-compose.yml pull -q
+#          docker compose -f docker-compose.yml up -d
+#          EOF
+
+#  health-check:
+#    name: UI Health Check
+#    runs-on: ubuntu-latest
+#    needs: [deploy]
+#    steps:
+#      - name: Check the docker container health status
+#        run: |
+#          if ! docker ps -a | grep pn
