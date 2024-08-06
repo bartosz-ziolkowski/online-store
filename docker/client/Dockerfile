@@ -11,16 +11,6 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Set build-time arguments
-ARG PAGE_SIZE
-ARG PRODUCTION
-ARG API_URL
-ARG API_BASKET_URL
-ARG KEYCLOAK_URL
-ARG KEYCLOAK_REALM
-ARG KEYCLOAK_CLIENT_ID
-ARG STRIPE_PUBLIC_KEY
-
 # Create the environment.prod.ts file with the build arguments
 RUN echo "export const environment = {" > src/environments/environment.ts && \
     echo "  PRODUCTION: ${PRODUCTION}," >> src/environments/environment.ts && \
