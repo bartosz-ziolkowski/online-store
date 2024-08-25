@@ -6,6 +6,14 @@ ButikDK is an e-commerce platform where you can buy shoes. It is a fully functio
 With this project, I aimed to further refine my skills in Java Spring Boot and Angular, but I wanted to take it a step further. I utilized Redis as a caching store for the shopping cart. Additionally, I integrated user authentication using a third-party application, specifically the popular Keycloak. Moreover, I implemented a payment gateway to enhance the user experience, using Stripe for this purpose.
 
 ## Screenshots
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/xidoj1grbo6waqbulgye.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/puin4dotko4rt6lvzxl5.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/mncwnwszs2f2lt2o6lz8.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/t7snicf9d6bxbdncgrx0.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/b5fctpx3cgkj1adezhxt.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/pco3c45tpkfjroig0k0y.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/karblvpnslrnnvjfpbdy.png)
+![alt text](https://res.cloudinary.com/dv7nhvy8e/image/upload/v1724580618/eqlzqtclaggjp8416ak2.png)
 
 ## Technologies
 ### Frontend
@@ -30,3 +38,6 @@ With this project, I aimed to further refine my skills in Java Spring Boot and A
 - Client was deployed on Vercel
 
 ## Live demo
+Click below to watch the app walkthrough on YouTube
+
+[![alt text](https://img.youtube.com/vi/exI64PAyCJ8/0.jpg)](https://www.youtube.com/watch?v=exI64PAyCJ8)
